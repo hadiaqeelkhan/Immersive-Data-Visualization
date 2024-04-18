@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Bar Chart Visualization with A-Frame and D3.js</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <a-scene>
+        <a-entity position="0 0 2">
+            <a-camera></a-camera>
+        </a-entity>
+
+        <!-- Outer box for the container -->
+        <a-box width="2.5" height="0.2" depth="2" color="#3949AB" position="-2.5 0 -3"></a-box>
+
+        <!-- Inner container for the bars -->
+        <a-entity id="container" position="-2.5 0 -3">
+            <a-entity id="bars"></a-entity>
+        </a-entity>
+    </a-scene>
+
+    <script>
+        // Sample data representing a 5x5 matrix
+        const data = [
+            [5, 12, 18, 24, 30],
+            [15, 22, 28, 34, 40],
+            [25, 32, 38, 44, 50],
+            [35, 42, 48, 54, 60],
+            [45, 52, 58, 64, 70]
+        ];
+
+        // Set up A-Frame scene
+        const scene = d3.select('a-scene');
+        const barContainer = d3.select('#bars');
+
+        // Define a color scale
+        const colorScale = d3.scaleLinear()
+                            .domain([0, d3.max(data.flat())])
+                            .range(["#FF0000", "#0000FF"]); // Pink to Blue color range
+
+        // Create bars
+        const barWidth = 0.3;
+        const barDistance = 0.2;
+
+        data.forEach((row, rowIndex) => {
+            row.sort((a, b) => a - b); // Sort values in each row in increasing order
+            row.forEach((height, colIndex) => {
+                const posX = colIndex * (barWidth + barDistance) - 1.5;
+                const posY = height / 20; // Scale down height for better visualization
+                const posZ = rowIndex * (barWidth + barDistance) - 1.5;
+
+                barContainer.append('a-box')
+                    .attr('position', `${posX} ${posY / 2} ${posZ}`)
+                    .attr('width', barWidth)
+                    .attr('height', posY)
+                    .attr('depth', barWidth)
+                    .attr('color', colorScale(height)); // Use color scale for each bar
+            });
+        });
+    </script>
+</body>
+</html>
