@@ -9,7 +9,7 @@
 </head>
 <body>
     <a-scene>
-        <a-entity position="0 0 2">
+        <a-entity position="0 2 2">
             <a-camera></a-camera>
         </a-entity>
 
@@ -39,7 +39,7 @@
         // Define a color scale
         const colorScale = d3.scaleLinear()
                             .domain([0, d3.max(data.flat())])
-                            .range(["#FFFF00", "#FF0000"]); // Pink to Blue color range
+                            .range(["#FFFF00", "#FF0000"]); 
 
         // Create bars
         const barWidth = 0.3;
